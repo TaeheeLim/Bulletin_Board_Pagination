@@ -26,4 +26,10 @@ public class BoardController {
         log.info("boardList = {}", boardList.toString());
         return "hello";
     }
+
+    @GetMapping("/addBoard")
+    public String boardAddForm() {
+        return "board/boardList";
+    }
+
 }
