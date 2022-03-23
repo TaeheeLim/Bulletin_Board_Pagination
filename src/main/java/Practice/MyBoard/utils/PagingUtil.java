@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -11,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Setter
 @NoArgsConstructor
 @ToString
+@Slf4j
 public class PagingUtil {
     private Criteria cri;
     private int totalCount;

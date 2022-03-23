@@ -46,5 +46,11 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.boardDetail(boardIdx);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteBoard(int boardIdx) {
+        return boardMapper.deleteBoard(boardIdx);
+    }
+
 
 }

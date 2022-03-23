@@ -48,7 +48,8 @@
       <a class="page-link" href="#" th:href="@{|/board/boardList${paging.makeQueryPage(paging.startPage - 1)}|}">Previous</a>
     </li>
     <li th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}" class="page-item">
-        <a class="page-link" href="#" th:href="@{|/board/boardList${paging.makeQueryPage(page)}|}" th:text="${page}"></a>
+        <b th:if="${page} == ${paging.cri.page}" th:text="${page}"></b>
+        <a th:unless="${page} == ${paging.cri.page}" class="page-link" href="#" th:href="@{|/board/boardList${paging.makeQueryPage(page)}|}" th:text="${page}"></a>
     </li>
     <li class="page-item" th:if="${paging.next && paging.endPage > 0}">
       <a class="page-link" href="#" th:href="@{|/board/boardList${paging.makeQueryPage(paging.endPage + 1)}|}">Next</a>

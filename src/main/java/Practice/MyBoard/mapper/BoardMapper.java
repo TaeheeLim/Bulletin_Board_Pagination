@@ -17,4 +17,6 @@ public interface BoardMapper {
     int insertBoard(Board board);
 
     Board boardDetail(@Param("boardIdx")int boardIdx);
+
+    int deleteBoard(int boardIdx);
 }

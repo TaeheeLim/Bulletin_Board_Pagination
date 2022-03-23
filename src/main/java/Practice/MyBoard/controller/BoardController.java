@@ -7,7 +7,6 @@ import Practice.MyBoard.utils.Criteria;
 import Practice.MyBoard.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +30,6 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("paging", paging);
 
-        log.info("startPage = {}", paging.getStartPage());
-        log.info("endPage = {}", paging.getEndPage());
-
         return "/board/boardList";
     }
 
@@ -44,29 +40,46 @@ public class BoardController {
 
     @PostMapping("/boardWrite")
     public String boardWrite(@ModelAttribute Board board, RedirectAttributes redirect){
-        log.info("board = {}", board.toString());
         int result = boardService.insertBoard(board);
-        log.info("boardIdx = {}", board.getBoardIdx());
 
         redirect.addAttribute("boardIdx", board.getBoardIdx());
-
-        return "redirect:/board/boardDetail/{boardIdx}";
+        if(result != 0){
+            return "redirect:/board/boardDetail";
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @GetMapping("/boardDetail")
     public String boardDetail(@RequestParam int boardIdx,
                               @ModelAttribute Criteria cri,
                               Model model){
+        log.info("cri = {}", cri.toString());
 
         Board board = boardService.boardDetail(boardIdx);
-        log.info("board = {}", board.toString());
+
         model.addAttribute("board", board);
+
         PagingUtil paging = new PagingUtil();
         paging.setCri(cri);
+
         model.addAttribute("page", cri.getPage());
         model.addAttribute("paging", paging);
 
         return "/board/boardDetail";
+    }
+
+    @GetMapping("/boardDelete")
+    public String boardDelete(@ModelAttribute Criteria cri,
+                              RedirectAttributes redirectAttributes,
+                              int boardIdx) {
+        log.info("boardIdx={}", boardIdx);
+        boardService.deleteBoard(boardIdx);
+
+        redirectAttributes.addAttribute("page", cri.getPage());
+        redirectAttributes.addAttribute("perPageNum", cri.getPerPageNum());
+
+        return "redirect:/board/boardList";
     }
 
 }

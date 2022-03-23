@@ -5,17 +5,20 @@
     <select id="getBoardList" resultType="board" parameterType="int">
         SELECT *
           FROM myboard.board
+        WHERE BOARD_DEL_AT = 'N'
         ORDER BY BOARD_IDX DESC
         LIMIT #{pageStart}, #{perPageNum};
     </select>
 
     <select id="getNumberOfPost" resultType="int">
-        SELECT COUNT(*) FROM myboard.board;
+        SELECT COUNT(*)
+          FROM myboard.board
+         WHERE BOARD_DEL_AT = 'N';
     </select>
 
     <insert id="insertBoard" parameterType="board">
         INSERT INTO myboard.board
-        VALUES (NULL, #{boardTitle}, #{boardWriter}, #{boardContent}, sysdate(), 0);
+        VALUES (NULL, #{boardTitle}, #{boardWriter}, #{boardContent}, sysdate(), 0, 'N');
         <selectKey resultType="int" keyProperty="boardIdx" order="AFTER">
             SELECT LAST_INSERT_ID();
         </selectKey>
@@ -26,6 +29,12 @@
           FROM myboard.board
         WHERE BOARD_IDX = #{boardIdx}
     </select>
+
+    <update id="deleteBoard" parameterType="int">
+        UPDATE myboard.board
+           SET BOARD_DEL_AT = 'Y'
+         WHERE BOARD_IDX = #{boardIdx}
+    </update>
 
 
 </mapper>
