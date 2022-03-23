@@ -13,27 +13,50 @@
   <div>
 		<div class="container" role="main">
 			<h2>게시글 작성</h2>
-			<form name="form" id="form" role="form" method="post" action="${pageContext.request.contextPath}/board/saveBoard">
+			<form name="form" id="form" role="form" method="post" action="" th:action="@{/board/boardWrite}">
 				<div class="mb-3">
 					<label for="title">제목</label>
-					<input type="text" class="form-control" name="title" id="title" placeholder="제목">
+					<input type="text" class="form-control" name="boardTitle" id="title" placeholder="제목">
 				</div>
 
 				<div class="mb-3">
 					<label for="reg_id">작성자</label>
-					<input type="text" class="form-control" name="reg_id" id="reg_id" placeholder="이름">
+					<input type="text" class="form-control" name="boardWriter" id="reg_id" placeholder="이름">
 				</div>
 
 				<div class="mb-3">
 					<label for="content">내용</label>
-					<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용" ></textarea>
+					<textarea class="form-control" rows="5" name="boardContent" id="content" placeholder="내용" ></textarea>
 				</div>
       </form>
       <div class="board_center">
-        <button type="button" class="btn btn-outline-secondary"> 저장</button>
+        <button type="button" class="btn btn-outline-secondary" id="save-btn"> 저장</button>
       </div>
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+<script>
+
+
+    const saveBtn =document.querySelector('#save-btn')
+    saveBtn.addEventListener('click', function(){
+        const title = document.querySelector('#title').value;
+        const writer = document.querySelector('#reg_id').value;
+        const content = document.querySelector('#content').value;
+        if(title.trim() === ''){
+            alert('제목을 입력해주세요')
+            return
+        }
+        if(writer.trim() === ''){
+            alert('작성자를 입력해주세요')
+            return
+        }
+        if(content.trim() === ''){
+            alert('내용을 입력해주세요')
+            return
+        }
+        document.querySelector('#form').submit()
+    })
+</script>
 </html>

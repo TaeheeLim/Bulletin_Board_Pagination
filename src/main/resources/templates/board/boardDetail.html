@@ -12,8 +12,8 @@
         background-color:#F2F2F2;
         outline: none;
         border-radius: 10px;
-        width: 80vw;
-        height: 80vw;
+        width: 50vw;
+        height: 30vw;
     }
 </style>
 </head>
@@ -24,25 +24,25 @@
     <div style="padding : 30px;">
         <div class="form-group board_detail">
             <h4><label class="badge rounded-pill bg-light text-dark">제목</label></h4>
-            <span></span>
+            <span th:text="${board.boardTitle}"></span>
             <label class="badge rounded-pill bg-light text-dark">글번호</label>
-            <span></span>
+            <span th:text="${board.boardIdx}"></span>
         </div>
         <div class="form-group formstyle">
             <label class="badge bg-secondary">작성자</label>
-            <span></span>
+            <span th:text="${board.boardWriter}"></span>
             <label class="badge bg-secondary">작성날짜</label>
-            <span></span>
+            <span th:text="${board.boardDate}"></span>
             <label class="badge bg-secondary">조회수</label>
-            <span></span>
+            <span th:text="${board.boardCount}"></span>
         </div>
         <div class="form-group board_center">
-            <p></p><textarea readonly>안녕하세요</textarea></p>
+            <textarea readonly th:value="${board.boardContent}" th:text="${board.boardContent}"></textarea>
         </div>
         <div class="form-group board_center">
             <button type="button" class="btn btn-sm btn-outline-secondary">수정</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">삭제</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">목록</button>
+            <a href="#" class="btn btn-sm btn-outline-secondary" th:href="@{|/board/boardList${paging.makeQueryPage(page)}|}">목록</a>
         </div>
     </div>
 

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Board {
     @NonNull
-    private Long boardIdx;
+    private int boardIdx;
     @NonNull
     private String boardTitle;
     @NonNull
