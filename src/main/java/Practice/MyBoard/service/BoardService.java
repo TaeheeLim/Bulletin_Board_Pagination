@@ -8,7 +8,7 @@ import java.util.List;
 public interface BoardService {
     List<Board> getBoardList(Criteria criteria);
 
-    int getNumberOfPost();
+    int getNumberOfPost(Criteria criteria);
 
     int insertBoard(Board board);
 

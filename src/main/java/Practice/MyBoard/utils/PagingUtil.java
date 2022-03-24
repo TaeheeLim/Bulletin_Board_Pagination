@@ -57,6 +57,8 @@ public class PagingUtil {
         UriComponents uri = UriComponentsBuilder.newInstance()
                 .queryParam("page", page)
                 .queryParam("perPageNum", cri.getPerPageNum())
+                .queryParam("searchValue", cri.getSearchValue())
+                .queryParam("option", cri.getOption())
                 .build();
         return uri.toString();
     }

@@ -22,18 +22,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> getBoardList(Criteria criteria) {
         log.info(criteria.toString());
-        Map<String, Object> map = new HashMap<>();
-        map.put("searchValue", criteria.getSearchValue());
-        map.put("perPageNum", criteria.getPerPageNum());
-        map.put("option", criteria.getOption());
-        map.put("pageStart", criteria.getPageStart());
-        System.out.println(map.toString());
-        return boardMapper.getBoardList(map);
+
+        List<Board> list = boardMapper.getBoardList(criteria);
+        System.out.println("list : " + list.toString());
+
+        return list;
     }
 
     @Override
-    public int getNumberOfPost() {
-        return boardMapper.getNumberOfPost();
+    public int getNumberOfPost(Criteria criteria) {
+        return boardMapper.getNumberOfPost(criteria);
     }
 
     @Transactional(rollbackFor = Exception.class)

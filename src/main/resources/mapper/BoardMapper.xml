@@ -2,20 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Practice.MyBoard.mapper.BoardMapper">
-    <select id="getBoardList" resultType="board" parameterType="hashMap">
+    <select id="getBoardList" resultType="board" parameterType="Practice.MyBoard.utils.Criteria">
         SELECT *
           FROM myboard.board
         WHERE BOARD_DEL_AT = 'N'
-          and BOARD_CONTENT like concat('%', #{searchValue}, '%')
-
+        <if test="option eq 'title'">
+            AND BOARD_TITLE LIKE CONCAT('%',#{searchValue}, '%')
+        </if>
+        <if test="option eq 'content'">
+            AND BOARD_CONTENT LIKE CONCAT('%',#{searchValue}, '%')
+        </if>
         ORDER BY BOARD_IDX DESC
         LIMIT #{pageStart}, #{perPageNum};
     </select>
 
-    <select id="getNumberOfPost" resultType="int">
+    <select id="getNumberOfPost" resultType="int" parameterType="Practice.MyBoard.utils.Criteria">
         SELECT COUNT(*)
           FROM myboard.board
-         WHERE BOARD_DEL_AT = 'N';
+         WHERE BOARD_DEL_AT = 'N'
+         <if test="option eq 'title'">
+            AND BOARD_TITLE LIKE CONCAT('%',#{searchValue}, '%')
+         </if>
+         <if test="option eq 'content'">
+             AND BOARD_CONTENT LIKE CONCAT('%',#{searchValue}, '%')
+         </if>
     </select>
 
     <insert id="insertBoard" parameterType="board">

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,7 +27,8 @@ public class BoardController {
         PagingUtil paging = pagingService.getPagination(criteria, boardService);
         List<Board> boardList = boardService.getBoardList(criteria);
 
-        log.info("boardList.criteria = {}", criteria.toString());
+        log.info("컨트롤러에서 boardList : {}", boardList.toString());
+        log.info("컨트롤러에서 페이징 유틸 : {}", paging.toString());
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("paging", paging);
