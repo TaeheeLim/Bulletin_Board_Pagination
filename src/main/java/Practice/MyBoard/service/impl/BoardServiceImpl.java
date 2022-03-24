@@ -22,11 +22,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> getBoardList(Criteria criteria) {
         log.info(criteria.toString());
-
-        List<Board> list = boardMapper.getBoardList(criteria);
-        System.out.println("list : " + list.toString());
-
-        return list;
+        return boardMapper.getBoardList(criteria);
     }
 
     @Override

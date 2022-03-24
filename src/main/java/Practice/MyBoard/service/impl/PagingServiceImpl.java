@@ -15,7 +15,7 @@ public class PagingServiceImpl implements PagingService {
     public PagingUtil getPagination(Criteria criteria, BoardService boardService) {
         PagingUtil paging = new PagingUtil();
         paging.setCri(criteria);
-        log.info("개수1 : {}", boardService.getNumberOfPost(criteria));
+        log.info("개수 : {}", boardService.getNumberOfPost(criteria));
         paging.setTotalCount(boardService.getNumberOfPost(criteria));
 
 
