@@ -68,6 +68,8 @@ public class PagingUtil {
                 .queryParam("boardIdx", idx)
                 .queryParam("page", page)
                 .queryParam("perPageNum", cri.getPerPageNum())
+                .queryParam("searchValue", cri.getSearchValue())
+                .queryParam("option", cri.getOption())
                 .build();
         return uri.toUriString();
     }
