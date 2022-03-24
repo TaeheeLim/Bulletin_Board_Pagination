@@ -14,5 +14,9 @@ public interface BoardService {
 
     Board boardDetail(int boardIdx);
 
-    int deleteBoard(int boardidx);
+    int deleteBoard(int boardIdx);
+
+    int updateBoard(Board board);
+
+    int increaseCount(int boardIdx);
 }

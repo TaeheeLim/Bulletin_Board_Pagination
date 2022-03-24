@@ -6,11 +6,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
 
-    List<Board> getBoardList(@Param("pageStart") int pageStart, @Param("perPageNum") int perPageNum);
+    List<Board> getBoardList(Map<String, Object> map);
 
     int getNumberOfPost();
 
@@ -19,4 +20,8 @@ public interface BoardMapper {
     Board boardDetail(@Param("boardIdx")int boardIdx);
 
     int deleteBoard(int boardIdx);
+
+    int updateBoard(Board board);
+
+    int increaseCount(int boardIdx);
 }

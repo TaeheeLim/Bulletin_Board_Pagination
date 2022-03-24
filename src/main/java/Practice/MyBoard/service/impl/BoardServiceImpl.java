@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +21,14 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Board> getBoardList(Criteria criteria) {
-        int pageStart = criteria.getPageStart();
-        int perPageNum = criteria.getPerPageNum();
-        log.info("pageStart = {}", pageStart);
-        log.info("perPageNum = {}", perPageNum);
-
-        return boardMapper.getBoardList(pageStart, perPageNum);
+        log.info(criteria.toString());
+        Map<String, Object> map = new HashMap<>();
+        map.put("searchValue", criteria.getSearchValue());
+        map.put("perPageNum", criteria.getPerPageNum());
+        map.put("option", criteria.getOption());
+        map.put("pageStart", criteria.getPageStart());
+        System.out.println(map.toString());
+        return boardMapper.getBoardList(map);
     }
 
     @Override
@@ -35,10 +39,7 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertBoard(Board board) {
-        int result = boardMapper.insertBoard(board);
-        log.info("result = {}", result);
-
-        return result;
+        return boardMapper.insertBoard(board);
     }
 
     @Override
@@ -50,6 +51,17 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int deleteBoard(int boardIdx) {
         return boardMapper.deleteBoard(boardIdx);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int updateBoard(Board board) {
+        return boardMapper.updateBoard(board);
+    }
+
+    @Override
+    public int increaseCount(int boardIdx) {
+        return boardMapper.increaseCount(boardIdx);
     }
 
 

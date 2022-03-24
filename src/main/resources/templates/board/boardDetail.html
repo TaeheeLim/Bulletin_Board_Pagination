@@ -15,13 +15,17 @@
         width: 50vw;
         height: 30vw;
     }
+
+    .hidden {
+        display: none;
+    }
 </style>
 </head>
 
 
 <body>
     <h2 class="board_detail">게시글 상세</h2>
-    <div style="padding : 30px;">
+    <div id="detail-area" style="padding : 30px;">
         <div class="form-group board_detail">
             <h4><label class="badge rounded-pill bg-light text-dark">제목</label></h4>
             <span th:text="${board.boardTitle}"></span>
@@ -36,23 +40,48 @@
             <label class="badge bg-secondary">조회수</label>
             <span th:text="${board.boardCount}"></span>
         </div>
-        <div class="form-group board_center">
+        <div id="content-area" class="form-group board_center">
             <textarea readonly th:value="${board.boardContent}" th:text="${board.boardContent}"></textarea>
         </div>
+        <form id="update-form" class="hidden" method="post" th:action="@{|/board/boardUpdate${paging.makeQueryPage(page)}|}">
+            <textarea id="update-text" name="boardContent" th:value="${board.boardContent}" th:text="${board.boardContent}"></textarea>
+            <input name="boardIdx" type="hidden" th:value="${board.boardIdx}">
+            <button id="update-finish" type="button">수정 완료</button>
+        </form>
         <div class="form-group board_center">
-            <button type="button" class="btn btn-sm btn-outline-secondary">수정</button>
-            <a id="del-button" href="#" class="btn btn-sm btn-outline-secondary" th:href="@{|/board/boardDelete${paging.makeQueryPage(board.boardIdx, page)}|}">삭제</a>
+            <button id="update-btn"type="button" class="btn btn-sm btn-outline-secondary">수정</button>
+            <a id="del-button" href="#" class="btn btn-sm btn-outline-secondary">삭제</a>
             <a href="#" class="btn btn-sm btn-outline-secondary" th:href="@{|/board/boardList${paging.makeQueryPage(page)}|}">목록</a>
         </div>
     </div>
 </body>
-<script>
+<script th:inline="javascript">
     const delBtn = document.querySelector('#del-button')
+    const updateBtn = document.querySelector('#update-btn')
+    const contentArea = document.querySelector('#content-area')
+    const updateFinish = document.querySelector('#update-finish')
+    const updateForm = document.querySelector('#update-form')
+
     delBtn.addEventListener('click', function(){
         const result = confirm('해당 게시글을 정말 삭제하시겠습니까?')
         if(result){
-            location.href = ''
+            const locateTo = [[${paging.makeQueryPage(board.boardIdx, page)}]]
+            /*<![CDATA[*/
+            location.href = '/board/boardDelete' + locateTo
+            /*]]>*/
         }
     })
+
+    updateBtn.addEventListener('click', function(){
+        contentArea.classList.add('hidden');
+        updateForm.classList.remove('hidden');
+        delBtn.classList.add('hidden')
+        updateBtn.classList.add('hidden')
+    })
+
+    updateFinish.addEventListener('click', function(){
+        updateForm.submit()
+    })
+
 </script>
 </html>

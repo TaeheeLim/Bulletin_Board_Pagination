@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +27,8 @@ public class BoardController {
     public String getBoardList(@ModelAttribute Criteria criteria, Model model){
         PagingUtil paging = pagingService.getPagination(criteria, boardService);
         List<Board> boardList = boardService.getBoardList(criteria);
+
+        log.info("boardList.criteria = {}", criteria.toString());
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("paging", paging);
@@ -54,15 +57,13 @@ public class BoardController {
     public String boardDetail(@RequestParam int boardIdx,
                               @ModelAttribute Criteria cri,
                               Model model){
-        log.info("cri = {}", cri.toString());
-
+        boardService.increaseCount(boardIdx);
         Board board = boardService.boardDetail(boardIdx);
-
-        model.addAttribute("board", board);
 
         PagingUtil paging = new PagingUtil();
         paging.setCri(cri);
 
+        model.addAttribute("board", board);
         model.addAttribute("page", cri.getPage());
         model.addAttribute("paging", paging);
 
@@ -71,15 +72,31 @@ public class BoardController {
 
     @GetMapping("/boardDelete")
     public String boardDelete(@ModelAttribute Criteria cri,
-                              RedirectAttributes redirectAttributes,
-                              int boardIdx) {
-        log.info("boardIdx={}", boardIdx);
+                              @RequestParam int boardIdx,
+                              RedirectAttributes redirectAttributes) {
         boardService.deleteBoard(boardIdx);
 
         redirectAttributes.addAttribute("page", cri.getPage());
         redirectAttributes.addAttribute("perPageNum", cri.getPerPageNum());
 
         return "redirect:/board/boardList";
+    }
+
+    @PostMapping("/boardUpdate")
+    public String boardUpdate(@ModelAttribute Board board,
+                              @ModelAttribute Criteria cri,
+                              RedirectAttributes redirectAttributes) {
+        log.info("updateContent = {}", board.toString());
+        log.info("Criteria = {}", cri.toString());
+
+        redirectAttributes.addAttribute("boardIdx", board.getBoardIdx());
+        redirectAttributes.addAttribute("page", cri.getPage());
+
+        if (boardService.updateBoard(board) > 0) {
+            return "redirect:/board/boardDetail";
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
 }

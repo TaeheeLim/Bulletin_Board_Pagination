@@ -2,10 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Practice.MyBoard.mapper.BoardMapper">
-    <select id="getBoardList" resultType="board" parameterType="int">
+    <select id="getBoardList" resultType="board" parameterType="hashMap">
         SELECT *
           FROM myboard.board
         WHERE BOARD_DEL_AT = 'N'
+          and BOARD_CONTENT like concat('%', #{searchValue}, '%')
+
         ORDER BY BOARD_IDX DESC
         LIMIT #{pageStart}, #{perPageNum};
     </select>
@@ -36,5 +38,15 @@
          WHERE BOARD_IDX = #{boardIdx}
     </update>
 
+    <update id="updateBoard" parameterType="hashmap">
+        UPDATE myboard.board
+           SET BOARD_CONTENT = #{boardContent}
+         WHERE BOARD_IDX = #{boardIdx}
+    </update>
 
+    <update id="increaseCount" parameterType="int">
+        UPDATE myboard.board
+           SET BOARD_COUNT = BOARD_COUNT + 1
+        WHERE BOARD_IDX = #{boardIdx}
+    </update>
 </mapper>
